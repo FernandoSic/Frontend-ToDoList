@@ -1,0 +1,17 @@
+$primary: #aafff1;
+$secondary: #fa7cac;
+.navbar {
+    background-color: #1c1f1e;
+    
+}
+
+.navbar-brand {
+    color: $primary;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.navbar-nav .nav-link {
+    color: $secondary;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
