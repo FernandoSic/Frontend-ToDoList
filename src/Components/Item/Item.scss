@@ -1,5 +1,7 @@
 $primary: #aafff1;
 $secondary: #fa7cac;
+$black: #000;
+
 .card{
     width: '25rem';
     background-color: $primary;
@@ -7,8 +9,11 @@ $secondary: #fa7cac;
     
 }
 
-.btn-remover {
-    width: 95%;
+.btn-info {
+    width: fit-content;
+    margin-right: 10px;
+    margin-left: 10px;
     background-color: $secondary;
+    color: $black;
     
 }
