@@ -33,8 +33,7 @@ function Item(props) {
         </Card.Text>
       </Card.Body>
       <CardBody>
-        <Button variant="info">Editar</Button>
-        <Button variant="info" onClick={removeItem}>Remover</Button>
+        <Button variant="info" onClick={removeItem}>Eliminar</Button>
       </CardBody>
     </Card>
   );

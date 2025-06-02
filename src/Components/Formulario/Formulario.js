@@ -2,8 +2,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import './Formulario.scss';
 import {addToDo} from '../../reducers/toDoSlice';
-import { useDispatch } from 'react-redux';
+import { addGoal } from '../../reducers/goalsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRef } from 'react';
+
 
 
 
@@ -11,17 +13,23 @@ function Formulario() {
   const inputRefName = useRef();
   const inputRefDescription = useRef();
   const inputRefDueDate = useRef();
+  const option=useSelector((state) => state.option.value);
 
   const dispatch = useDispatch();
 
   const addItem = (e) => {
     e.preventDefault();
     
-    dispatch(addToDo({
-      'name': inputRefName.current.value,
-      'description': inputRefDescription.current.value,
-      'dueDate': inputRefDueDate.current.value
-    }));
+    if(inputRefName.current.value && inputRefDescription.current.value && inputRefDueDate.current.value){
+      if(option==="tasks"){
+        dispatch(addToDo({
+          'name': inputRefName.current.value,'description':inputRefDescription.current.value,'dueDate':inputRefDueDate.current.value}));
+      }else{
+        dispatch(addGoal({
+          'name': inputRefName.current.value,'description':inputRefDescription.current.value,'dueDate':inputRefDueDate.current.value}));
+      }
+      
+    }
   }
 
   return (
@@ -40,11 +48,17 @@ function Formulario() {
         <Form.Label>Due Date</Form.Label>
         <Form.Control type="date" ref={inputRefDueDate} />
       </Form.Group>
+      {(option==="tasks") &&
       <div className="button-container">
-        <Button variant="primary" onClick={addItem}>
-          Add Task
-        </Button>
+        <Button variant="primary" onClick={addItem}>Add Task</Button>
       </div>
+      }
+      {(option==="goals") &&
+      <div className="button-container">
+        <Button variant="primary" onClick={addItem}>Add Goal</Button>
+      </div>
+      }
+      
       
     </Form>
   );
