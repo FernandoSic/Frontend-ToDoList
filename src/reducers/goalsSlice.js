@@ -4,25 +4,39 @@ import { createSlice } from "@reduxjs/toolkit";
 export const goalSlice = createSlice({
     name: 'goals',
     initialState: {
-        value: [{
-        'name': 'realizar tareas de desarrollo web',    
-        'description': 'realizar tareas de desarrollo web',
-        'dueDate': '2023-10-01',
-
-    }]
+        value: []
     },
     reducers:{
         addGoal:(state, action) => {
             state.value.push(action.payload);
+            fetch('http://localhost:3001/goals/addGoal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': '123456'
+                },
+                body: JSON.stringify(action.payload)
+            }).catch((error) => {
+                console.log(error);
+            });
         },
         initAddGoal: (state, action) => {
             console.log('initAddGoal', action.payload);
             state.value.push(action.payload);
         },
         removeGoal: (state, action) => {
-                    console.log('removeGoal', action.payload);
-                    state.value = state.value.filter((goal) => goal.name !== action.payload);
-                }
+
+            state.value = state.value.filter((goal) => goal.id !== action.payload);
+            fetch('http://localhost:3001/goals/removeGoal/'+action.payload,{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': '123456'
+                },
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
     }
 
 });

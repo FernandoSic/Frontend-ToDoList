@@ -15,14 +15,55 @@ import { useDispatch } from 'react-redux';
 import { addToDo } from './reducers/toDoSlice';
 import { initAddToDo } from './reducers/toDoSlice';
 import { initAddGoal } from './reducers/goalsSlice';
-
 function App() {
 
   const toDos = useSelector((state) => state.toDos.value);
   const option = useSelector((state) => state.option.value);
   const goals = useSelector((state) => state.goals.value);
   const dispatch = useDispatch();
+  async function initFetch() {
+    fetch('http://localhost:3001/tasks/getTasks', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':  "123456"
+      }
+      }).then((response) => 
+        response.json()
+      ).then((response)=> {
+        response.forEach((toDo) => {
+          dispatch(initAddToDo({
+          ...toDo,
+          id: toDo._id // agrega la propiedad id
+        }));
+        })
+      }).catch(err=> {
+        console.log(err);
+      });
 
+      fetch('http://localhost:3001/goals/getGoals', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':  "123456"
+      }
+      }).then((response) => 
+        response.json()
+      ).then((response)=> {
+        response.forEach((goal) => {
+          dispatch(initAddGoal({
+          ...goal,
+          id: goal._id // agrega la propiedad id
+        }));
+        })
+      }).catch(err=> {
+        console.log(err);
+      });
+      
+  }
+  useEffect(() => {
+    initFetch();
+  }, []);
   
   return (
     <div className="App">
@@ -51,21 +92,22 @@ function App() {
                   option === 'tasks' &&
                   toDos.map((toDo, index) => (
                     <Item
+                      id={toDo.id}
                       key={index}
                       name={toDo.name}
                       description={toDo.description}
-                      dueDate={toDo.dueDate}
-                      id={toDo.id}/>))
+                      dueDate={toDo.dueDate}/>))
                 }
                 {
                   option === 'goals' &&
                   goals.map((goal, index) => (
                     <Item
+                      id={goal.id}
                       key={index}
                       name={goal.name}
                       description={goal.description}
                       dueDate={goal.dueDate}
-                      id={goal.id}/>))
+                      />))
                 }
                 
               </div>
